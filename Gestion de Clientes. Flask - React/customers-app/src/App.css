@@ -1,0 +1,169 @@
+@import url("https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap");
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+  font-size: 10px;
+  list-style: none;
+  scroll-behavior: smooth;
+  font-family: "Prompt", Tahoma, Geneva, Verdana, sans-serif;
+  color: #000;
+}
+img {
+  max-width: 100%;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #293462;
+}
+
+.main_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column wrap;
+  height: auto;
+  width: 100%;
+}
+
+.title_app_container article h1 {
+  padding: 1rem;
+  font-size: 5rem;
+  text-align: center;
+  color: #fff;
+}
+
+.button_add_container {
+  margin: 1rem;
+}
+
+.button_add_container article button {
+  padding: 1rem;
+  font-size: 2rem;
+  border-radius: 1rem;
+  border: none;
+  background: none;
+  color: #f24c4c;
+  transition: color 1s;
+  cursor: pointer;
+}
+
+.button_add_container article button:hover {
+  color: #fff;
+  transition: color 1s;
+}
+
+.section_table_container {
+  padding: 0 10%;
+  margin: 4rem auto 0;
+  height: auto;
+}
+
+.table_container {
+  width: 70rem;
+  border-collapse: collapse;
+}
+
+.table_container thead {
+  background-color: #f24c4c;
+}
+
+.table_container thead tr th {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 1.2rem;
+  vertical-align: top;
+  border: 0.1rem solid #fff;
+}
+
+.table_container tbody tr td {
+  font-size: 1.4rem;
+  font-weight: normal;
+  color: #fff;
+  background-color: #f24c4c80;
+  padding: 0.8rem;
+  text-align: center;
+  border: 0.1rem solid #fff;
+}
+
+.table_container tbody tr td div button {
+  padding: 1rem;
+  font-size: 1.4rem;
+  border: none;
+  background: none;
+  color: #f24c4c;
+}
+
+.table_container tbody tr td div button {
+  cursor: pointer;
+  transition: color 1s;
+}
+
+.table_container tbody tr td div button:hover {
+  color: #fff;
+  transition: color 1s;
+}
+
+@media only screen and (max-width: 768px) {
+  .table_container thead {
+    display: none;
+  }
+
+  .table_container,
+  .table_container tbody,
+  .tabl_container.table_container tr,
+  .table_container td {
+    display: block;
+    width: 30rem;
+  }
+
+  .table_container tr {
+    margin-bottom: 1.5rem;
+  }
+
+  .table_container tbody tr td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  .table_container td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 1.5rem;
+    font-weight: 600;
+    font-size: 1.4rem;
+    text-align: left;
+  }
+}
+
+.section_form_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.521);
+  top: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.section_form_container form input {
+  padding: 1rem;
+  outline: none;
+  margin-bottom: 0.5rem;
+  border: none;
+  font-size: 1.4rem;
+}
+
+.section_form_container form button {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  font-size: 1.4rem;
+}
