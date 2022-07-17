@@ -6,6 +6,7 @@
   box-sizing: border-box;
   font-size: 10px;
   font-family: Prompt, Helvetica, sans-serif;
+  list-style: none;
 }
 
 img {

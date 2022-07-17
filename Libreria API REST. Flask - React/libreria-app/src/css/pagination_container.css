@@ -1,0 +1,28 @@
+.pagination_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column wrap;
+  height: auto;
+  width: 100%;
+}
+
+.pagination_list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: row wrap;
+  height: auto;
+  width: 30rem;
+  list-style: none;
+}
+
+.pagination_list li {
+  padding: 1rem;
+  font-size: 1.2rem;
+  color: #bf2e1a;
+  cursor: pointer;
+  font-weight: 900;
+  background-color: #293241;
+  margin: 1rem;
+}
