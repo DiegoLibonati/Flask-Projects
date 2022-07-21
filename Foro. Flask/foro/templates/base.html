@@ -22,18 +22,51 @@
 
         <nav class="navbar_container">
             <ul class="navbar_container_list">
-                <li><a href="#">Test</a></li>
-                <li><a href="#">Test</a></li>
-                <li><a href="#">Test</a></li>
-                <li><a href="#">Test</a></li>
+              {% if user.is_authenticated %}
+                <li class="navbar_container_list_li"><a class="navbar_container_list_li_a" href="/">Home</a></li>
+                <li class="navbar_container_list_li"><a class="navbar_container_list_li_a" href={{ url_for('views.profile', username = current_user.username) }}>Profile</a></li>
+                <li class="navbar_container_list_li"><a class="navbar_container_list_li_a" href="/logout">Log out</a></li>
+              {% else %}
+                <li class="navbar_container_list_li"><a class="navbar_container_list_li_a" href="/login">Login</a></li>
+                <li class="navbar_container_list_li"><a class="navbar_container_list_li_a" href="/sign-up">Sign Up</a></li>
+              {% endif %}
             </ul>
         </nav>
     </header>
 
-    {% block content %}
-    
-    {% endblock content %}
+    {% with messages = get_flashed_messages(with_categories=true) %} 
 
+      {% if messages %} 
+      
+        {% for category, message in messages %} 
+        
+          {% if category == 'error' %}
+
+              <section class="alert bad">
+                <h2>{{message}}</h2>
+                <h2 class="quit-alert">X</h2>
+              </section>
+        
+            {% else %}
+          
+              <section class="alert good">
+                <h2>{{message}}</h2>
+                <h2 class="quit-alert">X</h2>
+              </section>
+        
+            {% endif %} 
+          
+          {% endfor %} 
+        
+        {% endif %} 
+      
+      {% endwith %}
+
+      {% block content %}
+    
+      {% endblock content %}
+
+    <script src="{{ url_for('static', filename='js/general.js') }}"></script>
     <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
   </body>
 </html>
