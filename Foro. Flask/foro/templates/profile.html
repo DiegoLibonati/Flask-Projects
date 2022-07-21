@@ -1,3 +1,25 @@
 {% extends 'base.html' %}
 
+{% block linkcss %} <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile/header.css') }}">{% endblock linkcss %}
+
 {% block title %} {{user.username}} {% endblock title %}
+
+{% block content %} 
+
+<main>
+
+    <section class="header_profile_container">
+        <article class="header_container_banner">
+            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/5ed7291a-ec52-4075-9d88-d96b4d44b1ae.png" alt="banner">
+            <div class="header_container_banner_information">
+                <h2>{{user.username}}</h2>
+                <button><a href="{{url_for("views.profile_update", username = user.username)}}"><i class="bi bi-pencil-square"></i></a></button>
+            <div>
+        </article>
+
+        <img class="img-profile" src="https://educacion30.b-cdn.net/wp-content/uploads/2019/06/homer.gif" alt="gif">
+    <section>
+
+</main>
+
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block linkcss %} <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile/edit.css') }}">{% endblock linkcss %}
+
+{% block title %} Editing: {{user.username}} {% endblock title %}
+
+{% block content %}
+<main>
+    <section class="form_login_center">
+        <form method="POST" class="form_container">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{user.username}}">
+
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" value="{{user.email}}">
+
+            <label for="password">Password (ACTUAL):</label>
+            <input type="password" id="password" name="password">
+            
+            <button type="submit">Edit</button>
+        </form>
+    </section>
+</main>
+{% endblock content %}
