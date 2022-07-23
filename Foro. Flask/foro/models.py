@@ -6,3 +6,5 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True)
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
+    profile_photo = db.Column(db.String(120), nullable=True)
+    profile_banner = db.Column(db.String(120), nullable=True)

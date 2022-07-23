@@ -7,12 +7,28 @@
 {% block content %}
 <main>
     <section class="form_login_center">
-        <form method="POST" class="form_container">
+        <form method="POST" class="form_container" enctype="multipart/form-data">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" value="{{user.username}}">
 
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" value="{{user.email}}">
+
+            <label for="profile_photo">Profile photo:</label>
+            <input type="file" accept="image/*" id="profile_photo" name="profile_photo" value="{{user.profile_photo}}">
+
+            <div class="checkbox">
+                <label for="cbox2">Remove profile photo</label>
+                <input type="checkbox" id="removeprofilephoto" name="removeprofilephoto">
+            </div>
+
+            <label for="profile_photo">Profile banner:</label>
+            <input type="file" accept="image/*" id="profile_banner" name="profile_banner" value="{{user.profile_banner}}">
+
+            <div class="checkbox">
+                <label for="cbox2">Remove profile banner</label>
+                <input type="checkbox" id="removeprofilebanner" name="removeprofilebanner">
+            </div>
 
             <label for="password">Password (ACTUAL):</label>
             <input type="password" id="password" name="password">

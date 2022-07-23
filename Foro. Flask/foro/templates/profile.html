@@ -10,14 +10,29 @@
 
     <section class="header_profile_container">
         <article class="header_container_banner">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/5ed7291a-ec52-4075-9d88-d96b4d44b1ae.png" alt="banner">
+            {% if user.profile_banner %}
+
+            <img src="{{ url_for('static', filename='profilebanners/'+user.profile_banner) }}" alt="gif">
+    
+            {% else %}
+            <img src="https://kangsblackbeltacademy.com/wp-content/uploads/2017/04/banner-default.jpg" alt="banner">
+    
+            {% endif %}
+
             <div class="header_container_banner_information">
                 <h2>{{user.username}}</h2>
                 <button><a href="{{url_for("views.profile_update", username = user.username)}}"><i class="bi bi-pencil-square"></i></a></button>
             <div>
         </article>
 
-        <img class="img-profile" src="https://educacion30.b-cdn.net/wp-content/uploads/2019/06/homer.gif" alt="gif">
+        {% if user.profile_photo %}
+
+        <img class="img-profile" src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="gif">
+
+        {% else %}
+        <img class="img-profile" src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt="gif">
+
+        {% endif %}
     <section>
 
 </main>

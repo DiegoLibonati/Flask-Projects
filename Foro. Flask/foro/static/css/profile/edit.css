@@ -8,7 +8,7 @@ body{
     justify-content: center;
     flex-flow: column wrap;
     width: 90%;
-    height: 65rem;
+    height: 95rem;
 }
 
 .form_container{
@@ -36,6 +36,14 @@ body{
     border: none;
     color: #fff;
     margin-bottom: 1rem;
+}
+
+.checkbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: row wrap;
+    width: 100%;
 }
 
 .form_container button{
