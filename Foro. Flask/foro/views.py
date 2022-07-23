@@ -41,7 +41,7 @@ def profile_update(username):
             user_db = User.query.filter_by(username=username).first()
             email_db = User.query.filter_by(email=email).first()
 
-            if user_db.username == username and user_db.email == email and not profile_photo and not remove_profile_photo == "on" and not profile_banner and not remove_profile_banner == "on":
+            if (user_db and user_db.username == username) and user_db.email == email and not profile_photo and not remove_profile_photo == "on" and not profile_banner and not remove_profile_banner == "on":
                 flash("You cant edit with the same information.", category="error")
                 return render_template("profile.html", user=current_user)
             else:
@@ -51,22 +51,21 @@ def profile_update(username):
                             current_user.username = username
                             current_user.email = email
 
-                            # Arreglar esto
-                            if current_user.profile_photo and not remove_profile_photo == "on":
+                            if current_user.profile_photo and not remove_profile_photo == "on" and profile_photo:
                                 os.remove(os.path.join(current_app.root_path, 'static/profilephotos', current_user.profile_photo))
                                 current_user.profile_photo = save_images(profile_photo, "profilephotos")
-                            elif not current_user.profile_photo and not remove_profile_photo == "on":
+                            elif not current_user.profile_photo and not remove_profile_photo == "on" and profile_photo:
                                 current_user.profile_photo = save_images(profile_photo, "profilephotos")
-                            else:
+                            elif current_user.profile_photo and remove_profile_photo == "on" and not profile_photo:
                                 os.remove(os.path.join(current_app.root_path, 'static/profilephotos', current_user.profile_photo))
                                 current_user.profile_photo = None
 
-                            if current_user.profile_banner and not remove_profile_banner == "on":
+                            if current_user.profile_banner and not remove_profile_banner == "on" and profile_banner:
                                 os.remove(os.path.join(current_app.root_path, 'static/profilebanners', current_user.profile_banner))
+                                current_user.profile_banner = save_images(profile_banner, "profilebanners" )
+                            elif not current_user.profile_banner and not remove_profile_banner == "on" and profile_banner:
                                 current_user.profile_banner = save_images(profile_banner, "profilebanners")
-                            elif not current_user.profile_banner and not remove_profile_photo == "on":
-                                current_user.profile_banner = save_images(profile_banner, "profilebanners")
-                            else:
+                            elif current_user.profile_banner and remove_profile_banner == "on" and not profile_banner:
                                 os.remove(os.path.join(current_app.root_path, 'static/profilebanners', current_user.profile_banner))
                                 current_user.profile_banner = None
 

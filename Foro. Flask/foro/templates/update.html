@@ -14,16 +14,16 @@
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" value="{{user.email}}">
 
-            <label for="profile_photo">Profile photo:</label>
-            <input type="file" accept="image/*" id="profile_photo" name="profile_photo" value="{{user.profile_photo}}">
+            <label for="profile_photo" class="pfphoto">Profile photo:</label>
+            <input type="file" accept="image/*" id="profile_photo" class="pfphoto" name="profile_photo">
 
             <div class="checkbox">
                 <label for="cbox2">Remove profile photo</label>
                 <input type="checkbox" id="removeprofilephoto" name="removeprofilephoto">
             </div>
 
-            <label for="profile_photo">Profile banner:</label>
-            <input type="file" accept="image/*" id="profile_banner" name="profile_banner" value="{{user.profile_banner}}">
+            <label for="profile_banner" class="pfbanner">Profile banner:</label>
+            <input type="file" accept="image/*" id="profile_banner" class="pfbanner" name="profile_banner">
 
             <div class="checkbox">
                 <label for="cbox2">Remove profile banner</label>
@@ -38,3 +38,5 @@
     </section>
 </main>
 {% endblock content %}
+
+{% block javascript %} <script src="{{ url_for('static', filename='js/update/update.js') }}"> </script>{% endblock javascript %}
