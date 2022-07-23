@@ -50,6 +50,8 @@ def profile_update(username):
                         if check_password_hash(current_user.password, password):
                             current_user.username = username
                             current_user.email = email
+
+                            # Arreglar esto
                             if current_user.profile_photo and not remove_profile_photo == "on":
                                 os.remove(os.path.join(current_app.root_path, 'static/profilephotos', current_user.profile_photo))
                                 current_user.profile_photo = save_images(profile_photo, "profilephotos")
