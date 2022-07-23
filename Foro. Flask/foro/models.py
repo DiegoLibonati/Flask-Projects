@@ -8,3 +8,4 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     profile_photo = db.Column(db.String(120), nullable=True)
     profile_banner = db.Column(db.String(120), nullable=True)
+    last_connection = db.Column(db.String(120), nullable = False)
