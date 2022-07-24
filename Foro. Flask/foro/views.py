@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
+from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, jsonify
 from flask_login import login_required, current_user
 from .models import User
 from . import db
@@ -13,9 +13,17 @@ views = Blueprint('views', __name__)
 @login_required
 def home():
 
+    users_array = []
+
     if request.method == 'GET':
         users_db = User.query.limit(10).all()
-        return render_template("index.html", user=current_user, users = users_db)
+
+        for user in users_db:
+            user_json = {"img": user.profile_photo,
+            "nick": user.username}
+            users_array.append(user_json)
+
+        return render_template("index.html", user=current_user, users = users_db, usersjson = users_array)
 
 
 @views.route('/profile/<username>')

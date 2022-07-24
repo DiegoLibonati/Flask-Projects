@@ -6,21 +6,28 @@
 
 {% block content %}
 <main>
-    <section class="users_container">
+    <section class="users_container" data-users='{{ usersjson | tojson }}'>
         <h2>Some users: </h2>
         
         <article class="users_container_list">
             {% for user in users %}
+            <div class="{{user.username}}_container">
                 {% if user.profile_photo %}
 
-                <img class="" src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="gif">
+                <img class="" src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="{{user.username}}">
         
                 {% else %}
-                <img class="" src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt="gif">
+                
+                <img class="" src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt="{{user.username}}">
         
                 {% endif %}
+            </div>
             {% endfor %}
         </article>
     </section>
 </main>
 {% endblock content %}
+
+{% block javascript %} <script src="{{ url_for('static', filename='js/home/users.js') }}"> 
+
+</script>{% endblock javascript %}
