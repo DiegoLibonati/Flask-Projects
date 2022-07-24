@@ -25,10 +25,11 @@ const handleHoverCardMobile = (e) => {
 
     const userContainer = document.querySelector(`.${user.nick}_container`)
 
-    userContainer.insertBefore(handleRenderHtml(user.img, user.nick), userContainer.firstChild)
+    if (!document.querySelector(".card-container")){
+        userContainer.insertBefore(handleRenderHtml(user.img, user.nick), userContainer.firstChild)
+    }
 
-    // Hacer nueva funcion que remueva todos los hover container card....
-    e.target.addEventListener("click", handleRemoveHoverCard);
+    document.querySelector(".card-container").addEventListener("click", handleRemoveHoverCard);
 
 }
 
@@ -51,7 +52,7 @@ const handleRenderHtml = (img, nick) => {
     const div = document.createElement("div")
 
     const html = `<img class="" src="/static/profilephotos/${img}" alt="${nick}">
-                    <h2>${nick}</h2>`
+                    <a href="/profile/${nick}"><h2>${nick}</h2></a>`
 
     div.innerHTML = html;
 
