@@ -11,7 +11,7 @@
         
         <article class="users_container_list">
             {% for user in users %}
-            <div class="{{user.username}}_container">
+            <div class="{{user.username}}_container cards">
                 {% if user.profile_photo %}
 
                 <img class="" src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="{{user.username}}">
