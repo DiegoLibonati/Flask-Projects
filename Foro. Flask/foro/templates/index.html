@@ -1,3 +1,26 @@
 {% extends 'base.html' %}
 
+{% block linkcss %} <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/users.css') }}">{% endblock linkcss %}
+
 {% block title %} Home {% endblock title %}
+
+{% block content %}
+<main>
+    <section class="users_container">
+        <h2>Some users: </h2>
+        
+        <article class="users_container_list">
+            {% for user in users %}
+                {% if user.profile_photo %}
+
+                <img class="" src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="gif">
+        
+                {% else %}
+                <img class="" src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt="gif">
+        
+                {% endif %}
+            {% endfor %}
+        </article>
+    </section>
+</main>
+{% endblock content %}
