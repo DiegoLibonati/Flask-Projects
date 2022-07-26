@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
-{% block linkcss %} <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile/header.css') }}">{% endblock linkcss %}
+{% block linkcss %} <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile/header.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile/main.css') }}">
+{% endblock linkcss %}
 
 {% block title %} {{user.username}} {% endblock title %}
 
@@ -35,8 +37,43 @@
         <img class="img-profile" src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt="gif">
 
         {% endif %}
-    <section>
+    </section>
 
+    <section class="profile_main">
+
+        <aside class="profile_information"> 
+
+        </aside>
+
+        <article class="profile_comments">
+            <form method="POST" class="form_container">
+                <h2>Leave a comment</h2>
+                <textarea name="comment"></textarea>
+                <button type="submit">SUBMIT</button>
+            </form>
+            
+            {% for user, comment in comments %}
+            <div class="comment_container">
+
+                    <div class="comment_container_header">
+                        {% if user.profile_photo %}
+
+                        <img  src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="gif">
+                
+                        {% else %}
+                        <img  src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt="gif">
+                
+                        {% endif %}
+                        <h2>{{user.username}}</h2>
+                    </div>
+
+                    <p>{{comment.content}}</p>
+
+            </div>
+            {% endfor %}
+        </article>
+
+    </section>
 </main>
 
 {% endblock content %}

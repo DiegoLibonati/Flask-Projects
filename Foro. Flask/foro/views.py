@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, jsonify
 from flask_login import login_required, current_user
-from .models import User
+from .models import User, Comment
 from . import db
 from werkzeug.security import check_password_hash
 import json
@@ -26,22 +26,41 @@ def home():
         return render_template("index.html", user=current_user, users = users_db, usersjson = users_array)
 
 
-@views.route('/profile/<username>')
+@views.route('/profile/<username>', methods= ['GET', 'POST'])
 @login_required
 def profile(username):
-
     user_db = User.query.filter_by(username=username).first()
+    profile_comments_db = db.session.query(User,Comment).join(Comment).filter_by(profile_id = user_db.id)
 
-    if user_db and username == current_user.username:
-        return render_template('profile.html', user=current_user)
-    elif user_db and username == user_db.username:
-        return render_template('profile.html', user=user_db)
-    else:
-        return render_template("<h2>User Not Found</h2>")
+    if request.method == 'POST':
+        content = request.form.get('comment')
+
+        new_comment = Comment(content = content,user_id = current_user.id, profile_id = user_db.id)
+        db.session.add(new_comment)
+        db.session.commit()
+
+        profile_comments_db = db.session.query(User,Comment).join(Comment).filter_by(profile_id = user_db.id)
+
+        if user_db and username == current_user.username:
+            return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)
+        else:
+            return render_template('profile.html', user=user_db, comments = profile_comments_db)
+
+    if request.method == 'GET':
+
+        if user_db and username == current_user.username:
+            return render_template('profile.html', user=current_user, comments = profile_comments_db)
+        elif user_db and username == user_db.username:
+            return render_template('profile.html', user=user_db, comments = profile_comments_db)
+        else:
+            return render_template("<h2>User Not Found</h2>")
 
 @views.route('/profile/edit/<username>', methods = ['GET', 'POST'])
 @login_required
 def profile_update(username):
+    
+    user_db = User.query.filter_by(username=username).first()
+    profile_comments_db = db.session.query(User,Comment).join(Comment).filter_by(profile_id = user_db.id)
 
     # El update se va a cargar solo si el usuario que se pasa por url es igual al usuario logeado.
     if username == current_user.username:
@@ -60,10 +79,11 @@ def profile_update(username):
             user_db = User.query.filter_by(username=username).first()
             email_db = User.query.filter_by(email=email).first()
 
+
             # Chequea si todos los datos del update al dar update son iguales, es decir, si no fueron editados.
             if (user_db and user_db.username == username) and user_db.email == email and not profile_photo and not remove_profile_photo == "on" and not profile_banner and not remove_profile_banner == "on":
                 flash("You cant edit with the same information.", category="error")
-                return render_template("profile.html", user=current_user)
+                return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)
             else:
                 # Si no existe dicho usuario.
                 if not user_db or user_db.username == current_user.username:
@@ -99,20 +119,20 @@ def profile_update(username):
                                 current_user.profile_banner = None
 
                             db.session.commit()
-                            return render_template("profile.html", user=current_user)   
+                            return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)   
                         else:
                             flash("The changes could not be applied because the password is invalid.", category="error")
-                            return render_template("profile.html", user=current_user)
+                            return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)
                     else:
                         flash("The changes could not be applied because the email already exists.", category="error")
-                        return render_template("profile.html", user=current_user)   
+                        return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)   
                 else:
                     flash("The changes could not be applied because the user already exists.", category="error")
-                    return render_template("profile.html", user=current_user)
+                    return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)
 
                          
 
-        return render_template('update.html', user=current_user)
+        return render_template('update.html', user=current_user, comments = profile_comments_db)
     else:
         return "<h2>User Not Found</h2>"
 

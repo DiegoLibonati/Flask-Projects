@@ -4,7 +4,7 @@ body {
 
 .header_profile_container{
     width: 90%;
-    height: 40rem;
+    height: 43rem;
     position: relative;
     margin-top: 2rem;
 }
@@ -60,12 +60,16 @@ body {
     height: 15rem;
     object-fit: cover;
     border-radius: 50%;
-    bottom: 11rem;
+    bottom: 14rem;
     left: 1rem;
     border: .2rem solid #05386B;
 }
 
 @media only screen and (min-width: 768px){
+
+    .header_profile_container{
+        height: 42rem;
+    }
 
     .header_container_banner_information{
         align-items: flex-end;

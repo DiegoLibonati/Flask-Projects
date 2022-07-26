@@ -12,10 +12,11 @@ const handleHoverCard = (e) => {
 
     const userContainer = document.querySelector(`.${user.nick}_container`)
 
-    userContainer.insertBefore(handleRenderHtml(user.img, user.nick), userContainer.firstChild)
-
-    document.querySelector(".card-container").addEventListener("mouseleave", handleRemoveHoverCard);
-
+    if (!document.querySelector(".card-container")){
+        userContainer.insertBefore(handleRenderHtml(user.img, user.nick), userContainer.firstChild)
+    }
+    
+   document.querySelector(".card-container").addEventListener("mouseleave", handleRemoveHoverCard)
 }
 
 const handleHoverCardMobile = (e) => {

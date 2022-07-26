@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
-{% block linkcss %} <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/users.css') }}">{% endblock linkcss %}
+{% block linkcss %} <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/users.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/chat.css') }}">
+{% endblock linkcss %}
 
 {% block title %} Home {% endblock title %}
 
@@ -24,6 +26,20 @@
             </div>
             {% endfor %}
         </article>
+    </section>
+
+    <section class="chat_container">
+        <ul class="chat_messages">
+            <li class="chat_message">
+                <img class="" src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="{{user.username}}">
+                <p>Esto es un mensaje de prueba</p>
+            </li>
+        </ul>
+
+        <form method="POST"> 
+            <input type="text" placeholder="Your message"></input>
+            <button>SUBMIT</button>
+        </form>
     </section>
 </main>
 {% endblock content %}
