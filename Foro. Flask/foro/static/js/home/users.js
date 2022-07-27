@@ -10,7 +10,7 @@ const handleHoverCard = (e) => {
 
     const user = users.find(user => user.nick === idImg)
 
-    const userContainer = document.querySelector(`.${user.nick}_container`)
+    const userContainer = document.getElementById(`${user.id}_container`)
 
     if (!document.querySelector(".card-container")){
         userContainer.insertBefore(handleRenderHtml(user.img, user.nick), userContainer.firstChild)
@@ -24,7 +24,7 @@ const handleHoverCardMobile = (e) => {
 
     const user = users.find(user => user.nick === idImg)
 
-    const userContainer = document.querySelector(`.${user.nick}_container`)
+    const userContainer = document.getElementById(`${user.id}_container`)
 
     if (!document.querySelector(".card-container")){
         userContainer.insertBefore(handleRenderHtml(user.img, user.nick), userContainer.firstChild)

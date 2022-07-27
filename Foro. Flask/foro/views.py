@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, jsonify
 from flask_login import login_required, current_user
-from .models import User, Comment
+from .models import User, Comment, Comment_Like
 from . import db
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 import json
 import os
 import secrets
@@ -20,37 +20,38 @@ def home():
 
         for user in users_db:
             user_json = {"img": user.profile_photo,
-            "nick": user.username}
+            "nick": user.username,
+            "id": user.id,}
             users_array.append(user_json)
 
         return render_template("index.html", user=current_user, users = users_db, usersjson = users_array)
 
 
-@views.route('/profile/<username>', methods= ['GET', 'POST'])
+@views.route('/profile/<user>', methods= ['GET', 'POST'])
 @login_required
-def profile(username):
-    user_db = User.query.filter_by(username=username).first()
+def profile(user):
+    user_db = User.query.filter_by(username=user).first()
+    print(user_db)
     profile_comments_db = db.session.query(User,Comment).join(Comment).filter_by(profile_id = user_db.id)
 
     if request.method == 'POST':
+
         content = request.form.get('comment')
 
         new_comment = Comment(content = content,user_id = current_user.id, profile_id = user_db.id)
         db.session.add(new_comment)
         db.session.commit()
 
-        profile_comments_db = db.session.query(User,Comment).join(Comment).filter_by(profile_id = user_db.id)
-
-        if user_db and username == current_user.username:
-            return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)
+        if user_db and user == current_user.username:
+            return redirect(url_for('views.profile', user = current_user.username))
         else:
-            return render_template('profile.html', user=user_db, comments = profile_comments_db)
+            return redirect(url_for('views.profile', user = user_db.username))
 
     if request.method == 'GET':
 
-        if user_db and username == current_user.username:
+        if user_db and user == current_user.username:
             return render_template('profile.html', user=current_user, comments = profile_comments_db)
-        elif user_db and username == user_db.username:
+        elif user_db and user == user_db.username:
             return render_template('profile.html', user=user_db, comments = profile_comments_db)
         else:
             return render_template("<h2>User Not Found</h2>")
@@ -83,7 +84,7 @@ def profile_update(username):
             # Chequea si todos los datos del update al dar update son iguales, es decir, si no fueron editados.
             if (user_db and user_db.username == username) and user_db.email == email and not profile_photo and not remove_profile_photo == "on" and not profile_banner and not remove_profile_banner == "on":
                 flash("You cant edit with the same information.", category="error")
-                return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)
+                return redirect(url_for('views.profile', user = current_user.username))
             else:
                 # Si no existe dicho usuario.
                 if not user_db or user_db.username == current_user.username:
@@ -119,16 +120,16 @@ def profile_update(username):
                                 current_user.profile_banner = None
 
                             db.session.commit()
-                            return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)   
+                            return redirect(url_for('views.profile', user = current_user.username))   
                         else:
                             flash("The changes could not be applied because the password is invalid.", category="error")
-                            return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)
+                            return redirect(url_for('views.profile', user = current_user.username))
                     else:
                         flash("The changes could not be applied because the email already exists.", category="error")
-                        return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)   
+                        return redirect(url_for('views.profile', user = current_user.username))
                 else:
                     flash("The changes could not be applied because the user already exists.", category="error")
-                    return render_template('profile.html', user=current_user, username=current_user, comments = profile_comments_db)
+                    return redirect(url_for('views.profile', user = current_user.username))
 
                          
 
@@ -147,3 +148,25 @@ def save_images (photo, route):
         photo.save(file_path)
         return photo_name
 
+@views.route("/<user>/<comment_id>", methods=['GET'])
+@login_required
+def like(user, comment_id):
+    user_db = User.query.filter_by(username=user).first()
+    comment = Comment.query.filter_by(id = comment_id)
+    like = Comment_Like.query.filter_by(user_id = current_user.id, comment_id = comment_id).first()
+
+    if not comment:
+        flash('Comment does not exist.', category="error")
+    elif like:
+        db.session.delete(like)
+        db.session.commit()
+    else:
+        like = Comment_Like(user_id = current_user.id, comment_id = comment_id)
+        db.session.add(like)
+        db.session.commit()
+
+    print(user_db, user, current_user.username)
+    if user_db and user == current_user.username:
+        return redirect(url_for('views.profile', user = current_user.username))
+    else:
+        return redirect(url_for('views.profile', user = user_db.username))

@@ -77,6 +77,29 @@
     transition: max-height 1s;
 }
 
+.navbar_logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: row wrap;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+}
+
+.navbar_logo img {
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+}
+
+.navbar_logo h2{
+    font-size: 2rem;
+    color: #5CDB95;
+    padding: 1rem;
+}
+
 @media only screen and (min-width:1024px) {
 
     .header_container{

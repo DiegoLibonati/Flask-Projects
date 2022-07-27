@@ -65,6 +65,16 @@
                 
                         {% endif %}
                         <h2>{{user.username}}</h2>
+
+
+                        {% if current_user.id in comment.likes|map(attribute="user_id")|list %}
+                        <a href="/{{user.username}}/{{comment.id}}" class="like_comment"><i class="bi bi-star-fill"></i></a><span class="like_comment_count">{{comment.likes|length}}</span>
+
+                        {% else %}
+                        <a href="/{{user.username}}/{{comment.id}}" class="like_comment"><i class="bi bi-star"></i></a><span class="like_comment_count">{{comment.likes|length}}</span>
+
+                        {% endif %}
+
                     </div>
 
                     <p>{{comment.content}}</p>
