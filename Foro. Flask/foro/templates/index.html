@@ -30,28 +30,28 @@
 
     <section class="chat_container">
         <ul class="chat_messages">
-            <li class="chat_message">
-                {% if user.profile_photo %}
 
-                <img class="" src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="{{user.username}}">
-        
-                {% else %}
-                
-                <img class="" src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt="{{user.username}}">
-        
-                {% endif %}
-                <p>Esto es un mensaje de prueba</p>
-            </li>
         </ul>
 
-        <form method="POST"> 
-            <input type="text" placeholder="Your message"></input>
-            <button>SUBMIT</button>
+        <form> 
+            <input type="text" placeholder="Your message" id="myMessage" class="inputMessage"></input>
+            <button id="sendbutton">SUBMIT</button>
         </form>
     </section>
 </main>
 {% endblock content %}
 
-{% block javascript %} <script src="{{ url_for('static', filename='js/home/users.js') }}"> 
+{% block javascript %} 
 
-</script>{% endblock javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" ></script>
+
+<script src="{{ url_for('static', filename='js/home/users.js') }}"> 
+
+</script>
+
+
+
+<script src="{{ url_for('static', filename='js/home/socketio.js') }}"> 
+
+</script>
+{% endblock javascript %}

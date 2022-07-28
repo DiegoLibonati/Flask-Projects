@@ -15,6 +15,9 @@ def home():
 
     users_array = []
 
+    if request.method == "POST":
+        pass
+
     if request.method == 'GET':
         users_db = User.query.limit(10).all()
 
@@ -31,7 +34,6 @@ def home():
 @login_required
 def profile(user):
     user_db = User.query.filter_by(username=user).first()
-    print(user_db)
     profile_comments_db = db.session.query(User,Comment).join(Comment).filter_by(profile_id = user_db.id)
 
     if request.method == 'POST':
@@ -151,8 +153,8 @@ def save_images (photo, route):
 @views.route("/<user>/<comment_id>", methods=['GET'])
 @login_required
 def like(user, comment_id):
-    user_db = User.query.filter_by(username=user).first()
-    comment = Comment.query.filter_by(id = comment_id)
+    comment = Comment.query.filter_by(id = comment_id).first()
+    user_db = User.query.filter_by(id=comment.profile_id).first()
     like = Comment_Like.query.filter_by(user_id = current_user.id, comment_id = comment_id).first()
 
     if not comment:
@@ -165,8 +167,6 @@ def like(user, comment_id):
         db.session.add(like)
         db.session.commit()
 
-    print(user_db, user, current_user.username)
-    if user_db and user == current_user.username:
-        return redirect(url_for('views.profile', user = current_user.username))
-    else:
+    if user_db:
         return redirect(url_for('views.profile', user = user_db.username))
+

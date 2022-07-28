@@ -30,6 +30,7 @@
     height: auto;
     background-color: #5CDB95;
     padding: .5rem;
+    overflow: hidden;
 }
 
 .chat_message img {

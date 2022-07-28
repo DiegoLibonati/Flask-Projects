@@ -23,7 +23,7 @@
 
         {% if user.is_authenticated %}
           <div class="navbar_logo">
-            {% if user.profile_photo %}
+            {% if current_user.profile_photo %}
 
             <img  src="{{ url_for('static', filename='profilephotos/'+current_user.profile_photo) }}" alt="gif">
     
