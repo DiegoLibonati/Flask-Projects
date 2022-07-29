@@ -170,3 +170,17 @@ def like(user, comment_id):
     if user_db:
         return redirect(url_for('views.profile', user = user_db.username))
 
+@views.route("/<comment_id>", methods=['GET'])
+@login_required
+def delete_comment(comment_id):
+    comment = Comment.query.filter_by(id = comment_id).first()
+    user_db = User.query.filter_by(id=comment.profile_id).first()
+
+    if not comment:
+        flash('Comment does not exist.', category="error")
+    else:
+        db.session.delete(comment)
+        db.session.commit()
+
+    if user_db:
+        return redirect(url_for('views.profile', user = user_db.username))

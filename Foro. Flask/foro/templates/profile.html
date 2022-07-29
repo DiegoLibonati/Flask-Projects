@@ -42,7 +42,17 @@
     <section class="profile_main">
 
         <aside class="profile_information"> 
+            <h2>Username: </h2>
+            <p>{{user.username}}</p>
 
+            <h2>Email: </h2>
+            <p>{{user.email}}</p>
+
+            <h2>Likes Gived: </h2>
+            <p>{{user.likes|count}}⭐</p>
+
+            <h2>Comments Made: </h2>
+            <p>{{user.comments|count}}💬</p>
         </aside>
 
         <article class="profile_comments">
@@ -75,6 +85,9 @@
 
                         {% endif %}
 
+                        {% if comment.user_id == current_user.id or comment.profile_id == current_user.id %}
+                            <a href="/{{comment.id}}" class="trash_comment"><i class="bi bi-trash"></i></a>
+                        {% endif %}
                     </div>
 
                     <p>{{comment.content}}</p>

@@ -8,7 +8,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 @socketio.on('message')
 @login_required
 def handleMessage(msg):
-    send(f'<img src="/static/profilephotos/{current_user.profile_photo}" alt="{current_user.username}"><h2>{current_user.username}</h2>:{msg}', broadcast=True)
+    send(f'<img src="/static/profilephotos/{current_user.profile_photo}" alt="{current_user.username}"/> <h2>{current_user.username}:</h2><p class="message">{msg}</p>', broadcast=True)
 
 if __name__ == "__main__":
     socketio.run(app,debug=True)
