@@ -57,15 +57,15 @@
 
 
                         {% if current_user.id in comment.likes|map(attribute="user_id")|list %}
-                        <a href="/{{user.username}}/{{comment.id}}" class="like_comment"><i class="bi bi-star-fill"></i></a><span class="like_comment_count">{{comment.likes|length}}</span>
+                        <a href="/{{user.username}}/{{comment.id}}/like" class="like_comment"><i class="bi bi-star-fill"></i></a><span class="like_comment_count">{{comment.likes|length}}</span>
 
                         {% else %}
-                        <a href="/{{user.username}}/{{comment.id}}" class="like_comment"><i class="bi bi-star"></i></a><span class="like_comment_count">{{comment.likes|length}}</span>
+                        <a href="/{{user.username}}/{{comment.id}}/like" class="like_comment"><i class="bi bi-star"></i></a><span class="like_comment_count">{{comment.likes|length}}</span>
 
                         {% endif %}
 
                         {% if comment.user_id == current_user.id or comment.profile_id == current_user.id %}
-                            <a href="/{{comment.id}}" class="trash_comment"><i class="bi bi-trash"></i></a>
+                            <a href="/{{user.username}}/{{comment.id}}/delete" class="trash_comment"><i class="bi bi-trash"></i></a>
                         {% endif %}
                     </div>
 

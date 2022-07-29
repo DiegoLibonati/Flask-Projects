@@ -6,6 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import json
 import os
 import secrets
+from datetime import datetime
 
 views = Blueprint('views', __name__)
 
@@ -20,7 +21,7 @@ def home():
 
     if request.method == 'GET':
         users_db = User.query.limit(10).all()
-
+        
         for user in users_db:
             user_json = {"img": user.profile_photo,
             "nick": user.username,
@@ -152,7 +153,7 @@ def save_images (photo, route):
         photo.save(file_path)
         return photo_name
 
-@views.route("/<user>/<comment_id>", methods=['GET'])
+@views.route("/<user>/<comment_id>/like", methods=['GET'])
 @login_required
 def like(user, comment_id):
     comment = Comment.query.filter_by(id = comment_id).first()
@@ -172,9 +173,9 @@ def like(user, comment_id):
     if user_db:
         return redirect(url_for('views.profile', user = user_db.username))
 
-@views.route("/<comment_id>", methods=['GET'])
+@views.route("<user>/<comment_id>/delete")
 @login_required
-def delete_comment(comment_id):
+def delete_comment(user ,comment_id):
     comment = Comment.query.filter_by(id = comment_id).first()
     user_db = User.query.filter_by(id=comment.profile_id).first()
 
@@ -186,3 +187,10 @@ def delete_comment(comment_id):
 
     if user_db:
         return redirect(url_for('views.profile', user = user_db.username))
+
+
+@views.before_request
+@login_required
+def update_user_is_active():
+    current_user.is_active = datetime.utcnow()
+    db.session.commit()
