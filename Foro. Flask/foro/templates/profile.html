@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
-{% block linkcss %} <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile/header.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile/main.css') }}">
+{% block linkcss %} 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile/header.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile/main.css') }}">
 {% endblock linkcss %}
 
 {% block title %} {{user.username}} {% endblock title %}
@@ -12,31 +13,16 @@
 
     <section class="header_profile_container">
         <article class="header_container_banner">
-            {% if user.profile_banner %}
-
             <img src="{{ url_for('static', filename='profilebanners/'+user.profile_banner) }}" alt="gif">
-    
-            {% else %}
-            <img src="https://kangsblackbeltacademy.com/wp-content/uploads/2017/04/banner-default.jpg" alt="banner">
-    
-            {% endif %}
 
             <div class="header_container_banner_information">
                 <h2>{{user.username}} |</h2>
-
                 <h2>Last connection: {{user.last_connection}}</h2>
                 <button><a href="{{url_for("views.profile_update", username = user.username)}}"><i class="bi bi-pencil-square"></i></a></button>
             <div>
         </article>
 
-        {% if user.profile_photo %}
-
         <img class="img-profile" src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="gif">
-
-        {% else %}
-        <img class="img-profile" src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt="gif">
-
-        {% endif %}
     </section>
 
     <section class="profile_main">
@@ -66,14 +52,7 @@
             <div class="comment_container">
 
                     <div class="comment_container_header">
-                        {% if user.profile_photo %}
-
                         <img  src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="gif">
-                
-                        {% else %}
-                        <img  src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt="gif">
-                
-                        {% endif %}
                         <h2>{{user.username}}</h2>
 
 

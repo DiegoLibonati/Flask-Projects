@@ -1,57 +1,45 @@
 {% extends 'base.html' %}
 
-{% block linkcss %} <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/users.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/chat.css') }}">
+{% block linkcss %} 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/users.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/chat.css') }}">
 {% endblock linkcss %}
 
 {% block title %} Home {% endblock title %}
 
 {% block content %}
-<main>
-    <section class="users_container" data-users='{{ usersjson | tojson }}'>
-        <h2>Some users: </h2>
-        
-        <article class="users_container_list">
-            {% for user in users %}
-            <div id="{{user.id}}_container" class="cards">
-                {% if user.profile_photo %}
+    <main>
+        <section class="users_container" data-users='{{ usersjson | tojson }}'>
+            <h2>Some users: </h2>
+            
+            <article class="users_container_list">
+                {% for user in users %}
+                <div id="{{user.id}}_container" class="cards">
+                    <img class="" src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="{{user.username}}">
+                </div>
+                {% endfor %}
+            </article>
+        </section>
 
-                <img class="" src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="{{user.username}}">
-        
-                {% else %}
-                
-                <img class="" src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt="{{user.username}}">
-        
-                {% endif %}
-            </div>
-            {% endfor %}
-        </article>
-    </section>
+        <section class="chat_container">
+            <ul class="chat_messages">
 
-    <section class="chat_container">
-        <ul class="chat_messages">
+            </ul>
 
-        </ul>
-
-        <form> 
-            <input type="text" placeholder="Your message" id="myMessage" class="inputMessage"></input>
-            <button id="sendbutton">SUBMIT</button>
-        </form>
-    </section>
-</main>
+            <form> 
+                <input type="text" placeholder="Your message" id="myMessage" class="inputMessage"></input>
+                <button id="sendbutton">SUBMIT</button>
+            </form>
+        </section>
+    </main>
 {% endblock content %}
 
 {% block javascript %} 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" ></script>
 
-<script src="{{ url_for('static', filename='js/home/users.js') }}"> 
+    <script src="{{ url_for('static', filename='js/home/users.js') }}"> </script>
 
-</script>
+    <script src="{{ url_for('static', filename='js/home/socketio.js') }}"> </script>
 
-
-
-<script src="{{ url_for('static', filename='js/home/socketio.js') }}"> 
-
-</script>
 {% endblock javascript %}
