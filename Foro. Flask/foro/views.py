@@ -99,7 +99,8 @@ def profile_update(username):
 
                             # IF: Si el usuario tiene una foto de perfil y no se toca el boton para remover la foto y se paso una foto en el input profile photo
                             if current_user.profile_photo and not remove_profile_photo == "on" and profile_photo:
-                                os.remove(os.path.join(current_app.root_path, 'static/profilephotos', current_user.profile_photo))
+                                if not current_user.profile_photo == "default.webp":
+                                    os.remove(os.path.join(current_app.root_path, 'static/profilephotos', current_user.profile_photo))
                                 current_user.profile_photo = save_images(profile_photo, "profilephotos")
                             # ELIF1: Si el usuario no tiene foto, no quiere borrar su foto y tiene pasada una foto, es decir, un valor en el input file
                             elif not current_user.profile_photo and not remove_profile_photo == "on" and profile_photo:
@@ -118,7 +119,8 @@ def profile_update(username):
                                 current_user.profile_banner = save_images(profile_banner, "profilebanners")
                             elif current_user.profile_banner and remove_profile_banner == "on" and not profile_banner:
                                 # ELIF2: Si el usuario tiene una foto de banner y el checkbox esta activado y no tiene pasada ninguna foto banner. Elmina la foto y deja el dato null
-                                os.remove(os.path.join(current_app.root_path, 'static/profilebanners', current_user.profile_banner))
+                                if not current_user.profile_banner == "default.jpg":
+                                    os.remove(os.path.join(current_app.root_path, 'static/profilebanners', current_user.profile_banner))
                                 current_user.profile_banner = None
 
                             db.session.commit()
