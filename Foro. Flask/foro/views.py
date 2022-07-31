@@ -15,12 +15,24 @@ views = Blueprint('views', __name__)
 def home():
 
     users_array = []
+    users_on = []
 
     if request.method == "POST":
         pass
 
     if request.method == 'GET':
         users_db = User.query.limit(10).all()
+        users_db_ons = User.query.all()
+        
+        time_now = datetime.utcnow()
+
+        for user in users_db_ons:
+            time_afk = time_now - user.is_active
+            time_afk = str(time_afk)
+            values_time = time_afk.split(":")
+            minutes = int(values_time[1])
+            if minutes < 5:
+                users_on.append(user)
         
         for user in users_db:
             user_json = {"img": user.profile_photo,
@@ -28,7 +40,7 @@ def home():
             "id": user.id,}
             users_array.append(user_json)
 
-        return render_template("index.html", user=current_user, users = users_db, usersjson = users_array)
+        return render_template("index.html", user=current_user, users = users_db, usersjson = users_array, users_on = users_on)
 
 
 @views.route('/profile/<user>', methods= ['GET', 'POST'])

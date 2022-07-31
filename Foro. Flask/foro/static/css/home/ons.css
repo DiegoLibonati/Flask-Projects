@@ -1,0 +1,28 @@
+.ons_container{
+    margin: 1rem 0 1rem 0;
+    background-color: #05386B;
+    width: calc(100% - 2rem);
+    margin: 1rem;
+    height: auto;
+    padding: 1rem;
+}
+
+.ons_container h2{
+    font-size: 2rem;
+    color: #fff;
+}
+
+.ons_container_list{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: row wrap;
+    width: 100%;
+    height: auto;
+}
+
+.ons_container_list li{
+    font-size: 1.5rem;
+    color: #5CDB95;
+    margin: 0 1rem 0 1rem;
+}
