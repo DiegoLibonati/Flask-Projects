@@ -5,8 +5,8 @@ from . import db
 from werkzeug.security import check_password_hash, generate_password_hash
 import json
 import os
-import secrets
 from datetime import datetime
+from .functions import save_images, check_files_on_update
 
 views = Blueprint('views', __name__)
 
@@ -107,34 +107,14 @@ def profile_update(username):
                     if not email_db or email_db.email == current_user.email:
                         # Si la contraseña pasada es igual a la contraseña encriptada en la base de datos
                         if check_password_hash(current_user.password, password):
+
                             current_user.username = username
                             current_user.email = email
+                            current_profile_photo_user = current_user.profile_photo 
+                            current_profile_banner_user = current_user.profile_banner 
 
-                            # IF: Si el usuario tiene una foto de perfil y no se toca el boton para remover la foto y se paso una foto en el input profile photo
-                            if current_user.profile_photo and not remove_profile_photo == "on" and profile_photo:
-                                if not current_user.profile_photo == "default.webp":
-                                    os.remove(os.path.join(current_app.root_path, 'static/profilephotos', current_user.profile_photo))
-                                current_user.profile_photo = save_images(profile_photo, "profilephotos")
-                            # ELIF1: Si el usuario no tiene foto, no quiere borrar su foto y tiene pasada una foto, es decir, un valor en el input file
-                            elif not current_user.profile_photo and not remove_profile_photo == "on" and profile_photo:
-                                current_user.profile_photo = save_images(profile_photo, "profilephotos")
-                            # ELIF2: Si el usuario tiene una foto de perfil y el checkbox esta activado y no tiene pasada ninguna foto. Elmina la foto y deja el dato null
-                            elif current_user.profile_photo and remove_profile_photo == "on" and not profile_photo:
-                                os.remove(os.path.join(current_app.root_path, 'static/profilephotos', current_user.profile_photo))
-                                current_user.profile_photo = None
-
-                            # IF: Si el usuario tiene una foto de banner y no se toca el boton para remover la foto de banner y se paso una foto en el input profile banner
-                            if current_user.profile_banner and not remove_profile_banner == "on" and profile_banner:
-                                os.remove(os.path.join(current_app.root_path, 'static/profilebanners', current_user.profile_banner))
-                                current_user.profile_banner = save_images(profile_banner, "profilebanners" )
-                            elif not current_user.profile_banner and not remove_profile_banner == "on" and profile_banner:
-                                # ELIF1: Si el usuario no tiene foto de banner, no quiere borrar su foto de banner y tiene pasada una foto de banner, es decir, un valor en el input file
-                                current_user.profile_banner = save_images(profile_banner, "profilebanners")
-                            elif current_user.profile_banner and remove_profile_banner == "on" and not profile_banner:
-                                # ELIF2: Si el usuario tiene una foto de banner y el checkbox esta activado y no tiene pasada ninguna foto banner. Elmina la foto y deja el dato null
-                                if not current_user.profile_banner == "default.jpg":
-                                    os.remove(os.path.join(current_app.root_path, 'static/profilebanners', current_user.profile_banner))
-                                current_user.profile_banner = None
+                            current_user.profile_photo = check_files_on_update(current_profile_photo_user, profile_photo, current_app, remove_profile_photo, "profilephotos", "default.webp")
+                            current_user.profile_banner = check_files_on_update(current_profile_banner_user, profile_banner, current_app, remove_profile_banner, "profilebanners", "default.jpg") 
 
                             db.session.commit()
                             return redirect(url_for('views.profile', user = current_user.username))   
@@ -154,16 +134,6 @@ def profile_update(username):
     else:
         return "<h2>User Not Found</h2>"
 
-
-
-def save_images (photo, route):
-    if photo:
-        hash_photo = secrets.token_urlsafe(10)
-        _, file_extension = os.path.splitext(photo.filename)
-        photo_name = hash_photo + file_extension
-        file_path = os.path.join(current_app.root_path, f'static/{route}', photo_name)
-        photo.save(file_path)
-        return photo_name
 
 @views.route("/<user>/<comment_id>/like", methods=['GET'])
 @login_required
@@ -189,16 +159,20 @@ def like(user, comment_id):
 @login_required
 def delete_comment(user ,comment_id):
     comment = Comment.query.filter_by(id = comment_id).first()
-    user_db = User.query.filter_by(id=comment.profile_id).first()
+
 
     if not comment:
         flash('Comment does not exist.', category="error")
     else:
+        user_db = User.query.filter_by(id=comment.profile_id).first()
+
         db.session.delete(comment)
         db.session.commit()
 
-    if user_db:
-        return redirect(url_for('views.profile', user = user_db.username))
+        if user_db:
+            return redirect(url_for('views.profile', user = user_db.username))
+
+    return redirect(url_for('views.profile', user = user))
 
 
 @views.before_request
