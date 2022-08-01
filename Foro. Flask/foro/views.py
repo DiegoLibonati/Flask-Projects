@@ -216,3 +216,11 @@ def create_post(category_id):
 
     if request.method == "GET":
         return render_template('post_create.html', user=current_user, category = category)
+
+@views.route('/posts/<category_id>/<title>', methods = ['GET'])
+@login_required
+def post(category_id, title):
+
+    post_db = Post.query.filter_by(title = title).first()
+
+    return render_template('post.html', user=current_user, post = post_db)

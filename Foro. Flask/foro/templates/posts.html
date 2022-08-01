@@ -23,7 +23,7 @@
                             <img src="{{ url_for('static', filename='profilephotos/'+user.profile_photo) }}" alt="img user">
                             <h3>{{user.username}}</h3>
                         </div>
-                        <h2><a href="#">{{post.title}}</a></h2>
+                        <h2><a href="{{url_for('views.post', category_id = category.id, title = post.title)}}">{{post.title}}</a></h2>
                     </div>
                 {% endfor %}
             </article>

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block linkcss %} 
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/posts/post.css') }}">
+{% endblock linkcss %}
+
+{% block title %} Create post {% endblock title %}
+
+{% block content %}
+    <main>
+        <section>
+            <h1>{{post.title}}</h1>
+            <p>{{post.content}}</p>
+        </section>
+    </main>
+{% endblock content %}
+
+{% block javascript %} 
+
+
+{% endblock javascript %}
