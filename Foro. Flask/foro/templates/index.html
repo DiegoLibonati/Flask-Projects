@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/users.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/chat.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/ons.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home/categorys.css') }}">
 {% endblock linkcss %}
 
 {% block title %} Home {% endblock title %}
@@ -31,6 +32,17 @@
                 <input type="text" placeholder="Your message" id="myMessage" class="inputMessage"></input>
                 <button id="sendbutton">SUBMIT</button>
             </form>
+        </section>
+
+        <section class="categorys_container">
+            {% for category in categorys %}
+                <article class="category_container">
+                    <img src="{{ url_for('static', filename='categoryimages/'+category.image) }}" alt="category"> 
+                    <div class="category_container_information">
+                        <a href="{{url_for('views.posts', category_id = category.id)}}">JOIN TO {{category.name}}</a>
+                    </div>
+                </article>
+            {% endfor %}
         </section>
 
         <section class="ons_container">

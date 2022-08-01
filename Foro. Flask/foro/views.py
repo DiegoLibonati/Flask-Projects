@@ -1,6 +1,7 @@
+from unicodedata import name
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, jsonify
 from flask_login import login_required, current_user
-from .models import User, Comment, Comment_Like
+from .models import User, Post, Post_Category, Profile_Comment, Profile_Comment_Like
 from . import db
 from werkzeug.security import check_password_hash, generate_password_hash
 import json
@@ -23,6 +24,7 @@ def home():
     if request.method == 'GET':
         users_db = User.query.limit(10).all()
         users_db_ons = User.query.all()
+        categorys = Post_Category.query.all()
         
         time_now = datetime.utcnow()
 
@@ -40,20 +42,20 @@ def home():
             "id": user.id,}
             users_array.append(user_json)
 
-        return render_template("index.html", user=current_user, users = users_db, usersjson = users_array, users_on = users_on)
+        return render_template("index.html", user=current_user, users = users_db, usersjson = users_array, users_on = users_on, categorys = categorys)
 
 
 @views.route('/profile/<user>', methods= ['GET', 'POST'])
 @login_required
 def profile(user):
     user_db = User.query.filter_by(username=user).first()
-    profile_comments_db = db.session.query(User,Comment).join(Comment).filter_by(profile_id = user_db.id)
+    profile_comments_db = db.session.query(User,Profile_Comment).join(Profile_Comment).filter_by(profile_id = user_db.id)
 
     if request.method == 'POST':
 
         content = request.form.get('comment')
 
-        new_comment = Comment(content = content,user_id = current_user.id, profile_id = user_db.id)
+        new_comment = Profile_Comment(content = content,user_id = current_user.id, profile_id = user_db.id)
         db.session.add(new_comment)
         db.session.commit()
 
@@ -76,7 +78,7 @@ def profile(user):
 def profile_update(username):
     
     user_db = User.query.filter_by(username=username).first()
-    profile_comments_db = db.session.query(User,Comment).join(Comment).filter_by(profile_id = user_db.id)
+    profile_comments_db = db.session.query(User,Profile_Comment).join(Profile_Comment).filter_by(profile_id = user_db.id)
 
     # El update se va a cargar solo si el usuario que se pasa por url es igual al usuario logeado.
     if username == current_user.username:
@@ -138,9 +140,9 @@ def profile_update(username):
 @views.route("/<user>/<comment_id>/like", methods=['GET'])
 @login_required
 def like(user, comment_id):
-    comment = Comment.query.filter_by(id = comment_id).first()
+    comment = Profile_Comment.query.filter_by(id = comment_id).first()
     user_db = User.query.filter_by(id=comment.profile_id).first()
-    like = Comment_Like.query.filter_by(user_id = current_user.id, comment_id = comment_id).first()
+    like = Profile_Comment_Like.query.filter_by(user_id = current_user.id, comment_id = comment_id).first()
 
     if not comment:
         flash('Comment does not exist.', category="error")
@@ -148,7 +150,7 @@ def like(user, comment_id):
         db.session.delete(like)
         db.session.commit()
     else:
-        like = Comment_Like(user_id = current_user.id, comment_id = comment_id)
+        like = Profile_Comment_Like(user_id = current_user.id, comment_id = comment_id)
         db.session.add(like)
         db.session.commit()
 
@@ -158,7 +160,7 @@ def like(user, comment_id):
 @views.route("<user>/<comment_id>/delete")
 @login_required
 def delete_comment(user ,comment_id):
-    comment = Comment.query.filter_by(id = comment_id).first()
+    comment = Profile_Comment.query.filter_by(id = comment_id).first()
 
 
     if not comment:
@@ -180,3 +182,12 @@ def delete_comment(user ,comment_id):
 def update_user_is_active():
     current_user.is_active = datetime.utcnow()
     db.session.commit()
+
+@views.route('/posts/<category_id>', methods = ['GET'])
+@login_required
+def posts(category_id):
+
+    posts_db = Post.query.filter_by(category_id = category_id).all()
+    category = Post_Category.query.filter_by(id = category_id).first()
+
+    return render_template('posts.html', user=current_user, posts = posts_db, category = category)

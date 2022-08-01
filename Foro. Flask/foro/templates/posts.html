@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block linkcss %} 
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/posts/posts.css') }}">
+{% endblock linkcss %}
+
+{% block title %}  {% endblock title %}
+
+{% block content %}
+    <main>
+        {% if not posts %}
+            <section class="posts_container">
+                <h1 class="if-not-post-h1" >There are no posts with the category: {{category.name}} but you can be the first to create a post.</h1>
+                <a class="if-not-post-a"  href="#">Create a new post of {{category.name}}</a>
+            </section>
+        {% else %}
+
+        {% endif %}
+    </main>
+{% endblock content %}
+
+{% block javascript %} 
+
+
+{% endblock javascript %}

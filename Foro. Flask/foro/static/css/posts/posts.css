@@ -1,0 +1,30 @@
+body{
+    background-color: #5CDB95;;
+}
+
+.posts_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column wrap;
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+}
+
+.if-not-post-h1{
+    font-size: 3rem;
+    text-align: center;
+    width: 90%;
+    color: #fff;
+}
+
+.if-not-post-a{
+    font-size: 2rem;
+    padding: 1rem;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 1rem;
+    color: #fff;
+    background-color: #05386B;
+}
