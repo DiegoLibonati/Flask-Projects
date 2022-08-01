@@ -1,4 +1,4 @@
-from unicodedata import name
+from unicodedata import category, name
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, jsonify
 from flask_login import login_required, current_user
 from .models import User, Post, Post_Category, Profile_Comment, Profile_Comment_Like
@@ -187,7 +187,32 @@ def update_user_is_active():
 @login_required
 def posts(category_id):
 
-    posts_db = Post.query.filter_by(category_id = category_id).all()
+    posts_db = db.session.query(User,Post).join(Post).filter_by(category_id = category_id)
+    print(posts_db)
     category = Post_Category.query.filter_by(id = category_id).first()
 
     return render_template('posts.html', user=current_user, posts = posts_db, category = category)
+
+@views.route('/posts/<category_id>/create-post', methods=['GET', 'POST'])
+@login_required
+def create_post(category_id):
+    category = Post_Category.query.filter_by(id = category_id).first()
+
+    if request.method == "POST":
+        post_title = request.form.get('title_post').strip()
+        post_content = request.form.get('content_post').strip()
+        post_user_id = current_user.id
+        post_category_id = category_id
+        
+        if post_title and post_content and post_user_id and post_category_id:
+            new_post = Post(title=post_title, content=post_content, user_id = post_user_id, category_id = post_category_id)
+            db.session.add(new_post)
+            db.session.commit()
+            flash("Post created.", category="success")
+            return redirect(url_for('views.posts', category_id = category_id))
+        else:
+            flash("You failed to create the post.", category="error")
+            return redirect(url_for('views.posts', category_id = category_id))
+
+    if request.method == "GET":
+        return render_template('post_create.html', user=current_user, category = category)
